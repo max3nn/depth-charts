@@ -2,7 +2,7 @@
 
 1. Clone the repository			
 2. Inside the root folder, execute the command 'dotnet restore'
-3. Then, dotnet run with 'dotnet run --verbosity minimal --project src/Api/Api.csproj'
+3. Then, dotnet run with 'dotnet run --verbosity minimal --project src/Api/Api.csproj' or alternatively 'dotnet watch run --verbosity minimal --project src/Api/Api.csproj'
 4. If you are running the project via VS Code, the previous command wont automatically open the Swagger UI. You can open the browser on the respective port from the link+/swagger in the output.
     Typically the it will open on http://localhost:5126/swagger/index.html
 
@@ -19,7 +19,8 @@
 # Assumptions, Conclusions and Considerations
 ## Assumptions
 1. Players don't have a fixed set of positions, they can change over time. Eg, Tom Brady is a QB, but he could be a any other role in future Charts.
-2. ...
+2. The DepthChart Is a relatively fixed size and that Pagination isn't something that is required, now or in the future.
+3. The Challenge doesn't require being able to create new Charts, however they will be seeded.
 
 ## Conclusions
 1. It was assumed that for this exercise that the positions would be unique, for example. In NFL there would only be "TE" position, even though that may not be the case.

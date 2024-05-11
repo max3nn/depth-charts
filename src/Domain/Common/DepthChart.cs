@@ -1,14 +1,21 @@
-﻿using Domain.Common.Players;
+﻿using DepthChart.Domain.Constants;
+using Domain.Common.Players;
+using Domain.Common.PlayersPositionsDict;
+using Domain.NFL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Common
+namespace DepthChart.Domain.Common
 {
-    public class DepthChart // Chart need to be geneirc to support all sporting Leagues and their positions
+    public class DepthChart
     {
-        public Dictionary<string, IEnumerable<Player>> _items = new Dictionary<string, IEnumerable<Player>>();
+        public required string League { get; init; }
+
+        public required string Team { get; init; }
+
+        public Dictionary<string, IEnumerable<Player>> Chart { get; set; } = new();
     }
 }

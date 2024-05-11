@@ -61,13 +61,17 @@ namespace Api.Controllers
                 Team = team,
                 Position = request.Position,
                 Name = request.Name,
-                Depth = request.Depth
+                Depth = request.Depth,
+                Number = request.Number
             });
 
             return Ok(result);
         }
 
         [HttpDelete("{league}/{team}/remove")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemovePlayerFromDepthChart([FromBody] RemovePlayerRequest request, string league, string team)
         {
             // Params should be like this: removePlayerFromDepthChart(“WR”, MikeEvans)
@@ -84,6 +88,9 @@ namespace Api.Controllers
         }
 
         [HttpPost("{league}/{team}/backups")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetBackups(GetBackupsRequest request, string league, string team)
         {
             // Params should be like this: getBackups(“QB”, Kyle Trask);

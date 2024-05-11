@@ -1,38 +1,38 @@
 ﻿namespace Domain.NFL
 {
-    public enum NFLTeam
+    public class NFLTeam
     {
-        ArizonaCardinals = 0,
-        AtlantaFalcons = 1,
-        BaltimoreRavens = 2,
-        BuffaloBills = 3,
-        CarolinaPanthers = 4,
-        ChicagoBears = 5,
-        CincinnatiBengals = 6,
-        ClevelandBrowns = 7,
-        DallasCowboys = 8,
-        DenverBroncos = 9,
-        DetroitLions = 10,
-        GreenBayPackers = 11,
-        HoustonTexans = 12,
-        IndianapolisColts = 13,
-        JacksonvilleJaguars = 14,
-        KansasCityChiefs = 15,
-        LasVegasRaiders = 16,
-        LosAngelesChargers = 17,
-        LosAngelesRams = 18,
-        MiamiDolphins = 19,
-        MinnesotaVikings = 20,
-        NewEnglandPatriots = 21,
-        NewOrleansSaints = 22,
-        NewYorkGiants = 23,
-        NewYorkJets = 24,
-        PhiladelphiaEagles = 25,
-        PittsburghSteelers = 26,
-        SanFrancisco49ers = 27,
-        SeattleSeahawks = 28,
-        TampaBayBuccaneers = 29,
-        TennesseeTitans = 30,
-        WashingtonFootballTeam = 31
+        public readonly string ArizonaCardinals = "ArizonaCardinals";
+        public readonly string AtlantaFalcons = "AtlantaFalcons";
+        public readonly string BaltimoreRavens = "BaltimoreRavens";
+        public readonly string BuffaloBills = "BuffaloBills";
+        public readonly string CarolinaPanthers = "CarolinaPanthers";
+        public readonly string ChicagoBears = "ChicagoBears";
+        public readonly string CincinnatiBengals = "CincinnatiBengals";
+        public readonly string ClevelandBrowns = "ClevelandBrowns";
+        public readonly string DallasCowboys = "DallasCowboys";
+        public readonly string DenverBroncos = "DenverBroncos";
+        public readonly string DetroitLions = "DetroitLions";
+        public readonly string GreenBayPackers = "GreenBayPackers";
+        public readonly string HoustonTexans = "HoustonTexans";
+        public readonly string IndianapolisColts = "IndianapolisColts";
+        public readonly string JacksonvilleJaguars = "JacksonvilleJaguars";
+        public readonly string KansasCityChiefs = "KansasCityChiefs";
+        public readonly string LasVegasRaiders = "LasVegasRaiders";
+        public readonly string LosAngelesChargers = "LosAngelesChargers";
+        public readonly string LosAngelesRams = "LosAngelesRams";
+        public readonly string MiamiDolphins = "MiamiDolphins";
+        public readonly string MinnesotaVikings = "MinnesotaVikings";
+        public readonly string NewEnglandPatriots = "NewEnglandPatriots";
+        public readonly string NewOrleansSaints = "NewOrleansSaints";
+        public readonly string NewYorkGiants = "NewYorkGiants";
+        public readonly string NewYorkJets = "NewYorkJets";
+        public readonly string PhiladelphiaEagles = "PhiladelphiaEagles";
+        public readonly string PittsburghSteelers = "PittsburghSteelers";
+        public readonly string SanFrancisco49ers = "SanFrancisco49ers";
+        public readonly string SeattleSeahawks = "SeattleSeahawks";
+        public readonly string TampaBayBuccaneers = "TampaBayBuccaneers";
+        public readonly string TennesseeTitans = "TennesseeTitans";
+        public readonly string WashingtonFootballTeam = "WashingtonFootballTeam";
     }
 }

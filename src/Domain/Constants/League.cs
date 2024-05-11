@@ -5,15 +5,15 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DepthChart.Domain.Constants;
-public enum League
+namespace DepthChart.Domain.Constants.League;
+public static class League
 {
-    MLB = 0,
-    MLS = 1,
-    NBA = 2,
-    NCAAF = 3,
-    NCAAM = 4,
-    NCAAW = 5,
-    NFL = 6,
-    NHL = 7
+    public static readonly string MLB = nameof(MLB);
+    public static readonly string MLS = nameof(MLS);
+    public static readonly string NBA = nameof(NBA);
+    public static readonly string NCAAF = nameof(NCAAF);
+    public static readonly string NCAAM = nameof(NCAAM);
+    public static readonly string NCAAW = nameof(NCAAW);
+    public static readonly string NFL = nameof(NFL);
+    public static readonly string NHL = nameof(NHL);
 }

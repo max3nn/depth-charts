@@ -1,4 +1,4 @@
 namespace DepthChart.Api.Models
 {
-    public record AddPlayerRequest(string Position, string Name, int Depth);
+    public record AddPlayerRequest(string Position, string Name, int Depth, int Number);
 }

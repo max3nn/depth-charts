@@ -16,6 +16,7 @@ namespace Application.Commands
         public required string Position { get; set; }
         public required string Name { get; set; }
         public required int Depth { get; set; }
+        public required int Number { get; set; }
     }
 
     public class AddPlayerToDepthChartCommandHandler : IRequestHandler<AddPlayerToDepthChartCommand, bool>

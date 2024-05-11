@@ -11,10 +11,10 @@ namespace Domain.NFL
 {
     public class NflDepthChart
     {
-        public League League { get; } = League.NFL;
+        //public League League { get; } = League.NFL;
 
-        public NFLTeam Team { get; init; }
+        //public NFLTeam Team { get; init; } = NFLTeam.ArizonaCardinals;
 
-        public Dictionary<string, IEnumerable<Player>> Chart { get; } = new();
+        //public Dictionary<string, IEnumerable<Player>> Chart { get; } = new();
     }
 }
