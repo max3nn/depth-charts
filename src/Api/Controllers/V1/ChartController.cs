@@ -1,3 +1,4 @@
+using Application.Commands;
 using Application.Queries;
 using DepthChart.Api.Models;
 using DepthChart.Domain.Constants;
@@ -27,43 +28,74 @@ namespace Api.Controllers
         [HttpGet("{league}/{team}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetFullDepthChart(string league, string team)
         {
-            // var result = await _sender.Send(
-            //     new GetFullDepthChartQuery
-            //     {
-            //         League = league,
-            //         Team = team
-            //     });
 
-            return Ok();
+            var result = await _sender.Send(
+                new GetFullDepthChartQuery
+                {
+                    League = league,
+                    Team = team
+                });
+
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost("{league}/{team}/add")]
-        public async Task<IActionResult> AddPlayerToDepthChart([FromBody] AddPlayerRequest request)
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AddPlayerToDepthChart([FromBody] AddPlayerRequest request, string league, string team)
         {
-            // Params should be like this: addPlayerToDepthChart(“LWR”, MikeEvans, 0);
+            var result = await _sender.Send(new AddPlayerToDepthChartCommand
+            {
+                League = league,
+                Team = team,
+                Position = request.Position,
+                Name = request.Name,
+                Depth = request.Depth
+            });
 
-            // var result = await _sender.Send(new AddPlayerToDepthChartCommand(request));
-            return Ok();
+            return Ok(result);
         }
 
         [HttpDelete("{league}/{team}/remove")]
-        public async Task<IActionResult> RemovePlayerFromDepthChart([FromBody] RemovePlayerRequest request)
+        public async Task<IActionResult> RemovePlayerFromDepthChart([FromBody] RemovePlayerRequest request, string league, string team)
         {
             // Params should be like this: removePlayerFromDepthChart(“WR”, MikeEvans)
 
-            // var result = await _sender.Send(new RemovePlayerFromDepthChartCommand(request));
-            return Ok();
+            var result = await _sender.Send(new RemovePlayerFromDepthChartCommand
+            {
+                League = league,
+                Team = team,
+                Position = request.Position,
+                Name = request.Name
+            });
+
+            return Ok(result);
         }
 
-        [HttpGet("backups")]
-        public async Task<IActionResult> GetBackups(GetBackupsRequest request)
+        [HttpPost("{league}/{team}/backups")]
+        public async Task<IActionResult> GetBackups(GetBackupsRequest request, string league, string team)
         {
             // Params should be like this: getBackups(“QB”, Kyle Trask);
 
-            // var result = await _sender.Send(new GetBackupsQuery(request));
-            return Ok();
+            var result = await _sender.Send(new GetBackupsQuery
+            {
+                Position = request.Position,
+                Name = request.Name,
+                League = league,
+                Team = team
+            });
+            return Ok(result);
         }
     }
 }

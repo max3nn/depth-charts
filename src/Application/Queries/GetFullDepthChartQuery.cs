@@ -17,7 +17,7 @@ namespace Application.Queries
 
     public class GetFullDepthChartQueryHandler : IRequestHandler<GetFullDepthChartQuery, DepthChartDTO>
     {
-        public async Task<DepthChartDTO> Handle(GetFullDepthChartQuery request, CancellationToken cancellationToken)
+        public async Task<DepthChartDTO> Handle(GetFullDepthChartQuery query, CancellationToken cancellationToken)
         {
             var depthChart =
             await Task.FromResult(new DepthChartDTO
