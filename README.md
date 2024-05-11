@@ -2,7 +2,9 @@
 
 1. Clone the repository			
 2. Inside the root folder, execute the command 'dotnet restore'
-3. Then, dotnet run  
+3. Then, dotnet run with 'dotnet run --verbosity minimal --project src/Api/Api.csproj'
+4. If you are running the project via VS Code, the previous command wont automatically open the Swagger UI. You can open the browser on the respective port from the link+/swagger in the output.
+    Typically the it will open on http://localhost:5126/swagger/index.html
 
 # How to Run tests
 
@@ -21,3 +23,20 @@
 
 ## Conclusions
 1. It was assumed that for this exercise that the positions would be unique, for example. In NFL there would only be "TE" position, even though that may not be the case.
+
+## Responses to the "Important Notes"
+A.
+    1:
+    2:
+
+B.
+    1:
+    2:
+
+C:
+
+D:
+
+TODO:
+Add Api Request Models.
+Add Api level DTO to return the data in the specified format.
