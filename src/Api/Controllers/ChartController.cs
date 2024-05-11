@@ -17,6 +17,12 @@ namespace Api.Controllers
         [HttpGet(Name = "getFullDepthChart")]
         public IEnumerable<WeatherForecast> Get([FromQuery] string team, League league)
         {
+            // TODO:
+
+            // Validate
+
+            // Send Mediator query
+
             return Enumerable.Range(1, 1).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
