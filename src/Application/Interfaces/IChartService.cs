@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DepthChart.Domain.Common;
-using Domain.Common.Players;
+using DepthChart.Domain;
 
 namespace Application.Interfaces
 {

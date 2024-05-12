@@ -1,14 +1,10 @@
 ﻿using Application.Interfaces;
+using DepthChart.Domain;
 using DepthChart.Domain.Contracts;
-using Domain.Common.Players;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Xml.Linq;
 
 namespace DepthChart.Application.Services
 {

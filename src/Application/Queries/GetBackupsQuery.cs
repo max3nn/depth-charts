@@ -1,11 +1,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.DTO;
 using Application.Interfaces;
-using DepthChart.Application;
-using DepthChart.Domain.Constants;
-using Domain.Common.Players;
+using DepthChart.Domain;
 using MediatR;
 
 namespace Application.Queries

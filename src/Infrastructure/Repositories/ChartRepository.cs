@@ -1,11 +1,7 @@
-using DepthChart.Domain.Common;
-using DepthChart.Domain.Constants;
+using DepthChart.Domain;
 using DepthChart.Domain.Contracts;
 using DepthChart.Infrastructure.Data;
-using Domain.Common.Players;
-using Domain.Common.PlayersPositionsDict;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace DepthChart.Infrastructure.Repositories
 {

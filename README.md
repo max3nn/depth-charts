@@ -24,6 +24,7 @@
 4. From the Sample Inputs, there is a depth of '0' used. The conclusion from this is that function will run on a base index of 0.
 5. Not of the Samples show any of the plater appended data, for example "BRADY, TOM "
 6. There is no need support casing variations, eg Nhl == NHL.
+7. Samples don't indicate the usage of a name comma in their inputs or output, they won't be considered.
 
 ## Conclusions
 1. It was assumed that for this exercise that the positions would be unique, for example. In NFL there would only be "TE" position, even though that may not be the case.

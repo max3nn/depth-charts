@@ -1,4 +1,4 @@
-﻿namespace Domain.Common.Players;
+﻿namespace DepthChart.Domain;
 public class Player
 {
     public Player(string name, int number)

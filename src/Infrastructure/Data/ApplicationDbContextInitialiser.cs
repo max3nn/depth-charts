@@ -1,10 +1,7 @@
-﻿using Domain.Common.Players;
-using Domain.Common.PlayersPositionsDict;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Client;
 using Microsoft.AspNetCore.Builder;
-using WebApplicationBuilder = Microsoft.AspNetCore.Builder;
+using DepthChart.Domain;
 
 namespace DepthChart.Infrastructure.Data;
 public static class InitialiserExtensions

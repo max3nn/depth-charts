@@ -1,5 +1,4 @@
-﻿using Domain.Common.Players;
-using Domain.NFL;
+﻿using Domain.NFL;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,8 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using DepthChart.Domain.Common;
+using DepthChart.Domain;
 
 namespace DepthChart.Infrastructure.Data
 {

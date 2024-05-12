@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.DTO;
 using Application.Interfaces;
-using DepthChart.Application;
-using DepthChart.Domain.Constants;
-using Domain.Common.Players;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
