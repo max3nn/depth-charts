@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.DTO;
+using Application.Interfaces;
 using DepthChart.Application;
 using DepthChart.Domain.Constants;
 using Domain.Common.Players;
@@ -19,17 +20,16 @@ namespace Application.Queries
 
     public class GetBackupsQueryHandler : IRequestHandler<GetBackupsQuery, IEnumerable<Player>>
     {
+        protected readonly IChartService _service;
+
+        public GetBackupsQueryHandler(IChartService service)
+        {
+            _service = service;
+        }
+
         public async Task<IEnumerable<Player>> Handle(GetBackupsQuery query, CancellationToken cancellationToken)
         {
-            var depthChart =
-            await Task.FromResult(new List<Player>
-            {
-                new Player("Player 1", 12),
-                new Player("Player 2", 35),
-                new Player("Player 3", 8)
-            });
-
-            return depthChart;
+            return await _service.GetBackups(query.League, query.Team, query.Position, query.Name);
         }
     }
 }

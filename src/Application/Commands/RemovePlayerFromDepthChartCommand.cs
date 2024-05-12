@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.DTO;
+using Application.Interfaces;
 using DepthChart.Application;
 using DepthChart.Domain.Constants;
 using Domain.Common.Players;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Commands
 {
@@ -17,11 +20,30 @@ namespace Application.Commands
         public required string Name { get; set; }
     }
 
-    public class RemovePlayerFromDepthChartCommandHandler : IRequestHandler<AddPlayerToDepthChartCommand, bool>
+    public class RemovePlayerFromDepthChartCommandHandler : IRequestHandler<RemovePlayerFromDepthChartCommand, bool>
     {
-        public async Task<bool> Handle(AddPlayerToDepthChartCommand command, CancellationToken cancellationToken)
+        protected IChartService _chartService;
+        protected ILogger<RemovePlayerFromDepthChartCommandHandler> _logger;
+
+        public RemovePlayerFromDepthChartCommandHandler(IChartService chartService, ILogger<RemovePlayerFromDepthChartCommandHandler> logger)
         {
-            return await Task.FromResult(true);
+            _chartService = chartService;
+            _logger = logger;
+        }
+
+        public async Task<bool> Handle(RemovePlayerFromDepthChartCommand command, CancellationToken cancellationToken)
+        {
+
+            try
+            { 
+                await _chartService.RemovePlayerFromDepthChart(command.League, command.Team, command.Position, command.Name);    
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

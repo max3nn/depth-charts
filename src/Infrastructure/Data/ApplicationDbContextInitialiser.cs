@@ -69,7 +69,6 @@ public class ApplicationDbContextInitialiser
                     { "LB", new List<Player> { new Player("Chandler Jones", 55)}},
                     { "CB", new List<Player> { new Player("Byron Murphy Jr.", 33)}},
                     { "S", new List<Player> { new Player("Budda Baker", 32)}}
-
                 }
             };
 

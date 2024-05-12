@@ -14,11 +14,12 @@ namespace DepthChart.Application.Services
 {
     public class ChartService(IChartRepository _repository, ILogger<ChartService> _logger) : IChartService
     {
-        public Task AddPlayerToDepthChart(string league, string team, string position, string name, int number, int depth)
+        public async ValueTask AddPlayerToDepthChart(string league, string team, string position, string name, int number, int depth)
         {
             try
             {
-                return _repository.AddPlayerToDepthChart(league, team, position, name, number, depth);
+                await _repository.AddPlayerToDepthChart(league, team, position, name, number, depth);
+                return;
             }
             catch (Exception ex)
             {
@@ -29,7 +30,15 @@ namespace DepthChart.Application.Services
 
         public Task<IEnumerable<Player>> GetBackups(string league, string team, string position, string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _repository.GetBackups(league, team, position, name);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<Domain.Common.DepthChart> GetFullDepthChart(string league, string team)
@@ -45,9 +54,18 @@ namespace DepthChart.Application.Services
             }
         }
 
-        public Task RemovePlayerFromDepthChart(string league, string team, string position, string name)
+        public async ValueTask RemovePlayerFromDepthChart(string league, string team, string position, string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _repository.RemovePlayerFromDepthChart(league, team, position, name);
+                return;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

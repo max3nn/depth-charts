@@ -1,9 +1,11 @@
+using DepthChart.Domain.Common;
 using DepthChart.Domain.Constants;
 using DepthChart.Domain.Contracts;
 using DepthChart.Infrastructure.Data;
 using Domain.Common.Players;
 using Domain.Common.PlayersPositionsDict;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace DepthChart.Infrastructure.Repositories
 {
@@ -18,48 +20,48 @@ namespace DepthChart.Infrastructure.Repositories
 
             //    var entityToUpdate = await _db.Chart
             //        .Where(x => x.League == league && x.Team == team)
-            //        .Select(x => x.Chart.Where( position].ToList())
+            //        .Select(x => x.Chart)
+            //        .Select(x => x[position])
             //        .FirstOrDefaultAsync();
+
+            //    entityToUpdate.ToList();
+            //    entityToUpdate.
+
+
 
             //    // Most likely will exist, so this should be the fastest way.
             //    if (entityToUpdate is not null)
             //    {
-            //        entityToUpdate.Insert(depth, newPlayer);
+            //        var EntityUpdatedList = entityToUpdate;
+            //        EntityUpdatedList.ToList();
+            //        EntityUpdatedList.Insert(depth, newPlayer);
+            //        EntityUpdatedList.Take(5);
 
-            //        // This is an Assumption based on research
-            //        entityToUpdate = entityToUpdate.Take(5).ToList();
+            //        entityToUpdate.ToList().A ;
 
-            //        _db.Update(entityToUpdate);
+            //        _db.Update(EntityUpdatedList);
             //        await _db.SaveChangesAsync();
             //        return;
             //    }
 
 
-            //    entityToUpdate = new List<Player>();
-
-            //    // TODO: Add Support for Position doesn't exist yet.
-            //    var chart = _db.Chart.Where(x => x.League == league && x.Team == team).FirstOrDefault();
-            //    if (chart is null)
-            //    {
-            //        // TODO: Add Support for League and Team doesn't exist yet.
-            //    }
-
-            //    await _db.SaveChangesAsync();
-            //    return;
-            //});
+            //TODO: Support Empty | null Positions => Assume validation is done in the service layer.
 
             return Task.CompletedTask;
+            //});
         }
 
-        Task<IEnumerable<Player>> IChartRepository.GetBackups(string league, string team, string position, string name)
+        async Task<IEnumerable<Player>> IChartRepository.GetBackups(string league, string team, string position, string name)
         {
-            //return Task.FromResult(_db.Chart
-            //    .Where(x => x.League == league && x.Team == team)
-            //    .Select(x => x.Chart._items[position])
-            //    .SkipWhile(x => x.Any(p => p.Name != name))
-            //    .Skip(1));
-            
-            throw new System.NotImplementedException();
+            var result = await _db.Chart
+                .Where(x => x.League == league && x.Team == team)
+                .Select(x => x.Chart)
+                .Select(x => x[position])
+                .Select(x => x.SkipWhile(x => x.Name == name))
+                .SelectMany(x => x)
+                .ToListAsync();
+
+            return result;
         }
 
         public async Task<Domain.Common.DepthChart> GetFullDepthChart(string league, string team)
@@ -69,20 +71,28 @@ namespace DepthChart.Infrastructure.Repositories
 
         public Task RemovePlayerFromDepthChart(string league, string team, string position, string name)
         {
-            //return Task.Run(async () =>
-            //{
-            //    var playerToRemove = _db.Chart
-            //        .Where(x => x.League == league && x.Team == team)
-            //        .Select(x => x.Chart._items[position])
-            //        .SelectMany(x => x.Where(p => p.Name == name));
+            return Task.Run(async () =>
+            {
 
-            //    _db.Remove(playerToRemove);
 
-            //    await _db.SaveChangesAsync();
-            //    return Task.CompletedTask;
-            //});
+                var allCharts = await _db.Chart.ToListAsync();
+                var updatedData = allCharts;
+                _db.Chart.RemoveRange(allCharts);
+                await _db.SaveChangesAsync();
 
-            return Task.CompletedTask;
+                var individualDepthChart = updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault();
+
+                var playersInPosition = individualDepthChart.Chart[position].ToList();
+                playersInPosition.RemoveAll(p => p.Name == name);
+
+                updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPosition;
+
+                await _db.Chart.AddRangeAsync(updatedData);
+                await _db.SaveChangesAsync();
+
+
+                return Task.CompletedTask;
+            });
         }
     }
 }
