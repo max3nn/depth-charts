@@ -14,9 +14,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHealthChecks();
 
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,21 +26,11 @@ if (app.Environment.IsDevelopment())
 
 // TODO: 
 // Implement global error handling
-// Implement global logging
-// Implement global exception handling
-// Implement global validation
-// Implement global security
-// Implement global caching
-// Implement global rate limiting
-// Implement global monitoring
-// Implement global health checks
-// Implement global metrics
 
-// app.UseAuthorization();
 
 
 app.MapControllers();
+app.MapHealthChecks("/health");
 
-// app.UseCors();
 
 app.Run();

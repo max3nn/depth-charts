@@ -6,7 +6,6 @@ public class Player
         Name = name;
         Number = number;
     }
-
     public int Number { get; private set; }
     public string Name { get; private set; }
 }

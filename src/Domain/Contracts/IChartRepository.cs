@@ -1,11 +1,4 @@
-﻿using DepthChart.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DepthChart.Domain.Contracts
+﻿namespace DepthChart.Domain.Contracts
 {
     public interface IChartRepository
     {

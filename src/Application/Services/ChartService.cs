@@ -10,11 +10,11 @@ namespace DepthChart.Application.Services
 {
     public class ChartService(IChartRepository _repository, ILogger<ChartService> _logger) : IChartService
     {
-        public async Task AddPlayerToDepthChart(string league, string team, string position, string name, int number, int depth)
+        public async Task AddPlayerToDepthChart(string league, string team, string position, string name, int number, int positionDepth)
         {
             try
             {
-                await _repository.AddPlayerToDepthChart(league, team, position, name, number, depth);
+                await _repository.AddPlayerToDepthChart(league, team, position, name, number, positionDepth);
                 return;
             }
             catch (Exception ex)

@@ -19,9 +19,9 @@
 # Assumptions, Conclusions and Considerations
 ## Assumptions
 1. Players don't have a fixed set of positions, they can change over time. Eg, Tom Brady is a QB, but he could be a any other role in future Charts.
-2. The DepthChart Is a relatively fixed size and that Pagination isn't something that is required, now or in the future.
+2. The PositionDepthChart Is a relatively fixed size and that Pagination isn't something that is required, now or in the future.
 3. The Challenge doesn't require being able to create new Charts, however they will be seeded.
-4. From the Sample Inputs, there is a depth of '0' used. The conclusion from this is that function will run on a base index of 0.
+4. From the Sample Inputs, there is a PositionDepth of '0' used. The conclusion from this is that function will run on a base index of 0.
 5. Not of the Samples show any of the plater appended data, for example "BRADY, TOM "
 6. There is no need support casing variations, eg Nhl == NHL.
 7. Samples don't indicate the usage of a name comma in their inputs or output, they won't be considered.

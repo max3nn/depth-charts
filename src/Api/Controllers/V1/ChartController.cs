@@ -1,12 +1,8 @@
 using Application.Commands;
 using Application.Queries;
 using DepthChart.Api.Models;
-using DepthChart.Domain.Constants;
-using Domain.NFL;
 using MediatR;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Api.Controllers
 {
