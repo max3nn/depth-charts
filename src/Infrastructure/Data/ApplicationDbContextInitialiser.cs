@@ -12,7 +12,6 @@ public static class InitialiserExtensions
 
         var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
 
-
         await initialiser.SeedAsync();
     }
 }
@@ -44,14 +43,10 @@ public class ApplicationDbContextInitialiser
 
     public async Task TrySeedAsync()
     {
-        // Default data
-        // Seed, if necessary
         try
         {
             var chart = _dbContext.Chart;
-            //if (!_dbContext.Chart.Any())
-            //{
-            var tester = new Domain.Common.DepthChart
+            var ACDepthChart = new Domain.Common.DepthChart
             {
                 League = "NFL",
                 Team = "ArizonaCardinals",
@@ -69,12 +64,8 @@ public class ApplicationDbContextInitialiser
                 }
             };
 
-
-                _dbContext.Chart.Add(tester);
-
+                _dbContext.Chart.Add(ACDepthChart);
                 await _dbContext.SaveChangesAsync();
-            //}
-
         }
         catch (Exception ex)
         {

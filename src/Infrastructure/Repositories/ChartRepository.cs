@@ -60,6 +60,8 @@ namespace DepthChart.Infrastructure.Repositories
 
                 var teamDepthChart = allDepthCharts.Where(dc => dc.League.ToUpper() == league.ToUpper() && dc.Team.ToUpper() == team.ToUpper()).FirstOrDefault();
 
+                if (teamDepthChart is null) throw new Exception("Chart not found.");
+
                 var playersInPosition = teamDepthChart.Chart[position].ToList(); // ToList returns a new Reference, so we can modify it and then reassign it later.
                 playersInPosition.RemoveAll(p => p.Name.ToUpper() == name.ToUpper());
 

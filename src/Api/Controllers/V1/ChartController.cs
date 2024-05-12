@@ -74,8 +74,6 @@ namespace Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemovePlayerFromDepthChart([FromBody] RemovePlayerRequest request, string league, string team)
         {
-            // Params should be like this: removePlayerFromDepthChart(“WR”, MikeEvans)
-
             var result = await _sender.Send(new RemovePlayerFromDepthChartCommand
             {
                 League = league,
@@ -93,8 +91,6 @@ namespace Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetBackups(GetBackupsRequest request, string league, string team)
         {
-            // Params should be like this: getBackups(“QB”, Kyle Trask);
-
             var result = await _sender.Send(new GetBackupsQuery
             {
                 Position = request.Position,
