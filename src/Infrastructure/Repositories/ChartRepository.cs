@@ -14,54 +14,36 @@ namespace DepthChart.Infrastructure.Repositories
         public Task AddPlayerToDepthChart(string league, string team, string position, string name, int number, int depth)
         {
 
-            //return Task.Run(async () =>
-            //{
-            //    var newPlayer = new Player(name, number);
+            return Task.Run(async () =>
+            {
+                var allCharts = await _db.Chart.ToListAsync();
+                var updatedData = allCharts;
+                _db.Chart.RemoveRange(allCharts);
+                await _db.SaveChangesAsync();
 
-            //    var entityToUpdate = await _db.Chart
-            //        .Where(x => x.League == league && x.Team == team)
-            //        .Select(x => x.Chart)
-            //        .Select(x => x[position])
-            //        .FirstOrDefaultAsync();
+                var teamDepthChart = updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault();
 
-            //    entityToUpdate.ToList();
-            //    entityToUpdate.
+                var playersInPosition = teamDepthChart.Chart[position].ToList();
 
+                playersInPosition.Insert(depth, new Player(name, number));
 
+                updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPosition;
 
-            //    // Most likely will exist, so this should be the fastest way.
-            //    if (entityToUpdate is not null)
-            //    {
-            //        var EntityUpdatedList = entityToUpdate;
-            //        EntityUpdatedList.ToList();
-            //        EntityUpdatedList.Insert(depth, newPlayer);
-            //        EntityUpdatedList.Take(5);
-
-            //        entityToUpdate.ToList().A ;
-
-            //        _db.Update(EntityUpdatedList);
-            //        await _db.SaveChangesAsync();
-            //        return;
-            //    }
+                await _db.Chart.AddRangeAsync(updatedData);
+                await _db.SaveChangesAsync();
 
 
-            //TODO: Support Empty | null Positions => Assume validation is done in the service layer.
-
-            return Task.CompletedTask;
-            //});
+                return Task.CompletedTask;
+            });
         }
 
         async Task<IEnumerable<Player>> IChartRepository.GetBackups(string league, string team, string position, string name)
         {
-            var result = await _db.Chart
-                .Where(x => x.League == league && x.Team == team)
-                .Select(x => x.Chart)
-                .Select(x => x[position])
-                .Select(x => x.SkipWhile(x => x.Name == name))
-                .SelectMany(x => x)
-                .ToListAsync();
+            var teamDepthChart = await _db.Chart.Where(dc => dc.League == league && dc.Team == team).FirstOrDefaultAsync();
 
-            return result;
+            var results = teamDepthChart.Chart[position].SkipWhile(x => x.Name == name);
+
+            return results;
         }
 
         public async Task<Domain.Common.DepthChart> GetFullDepthChart(string league, string team)
@@ -73,16 +55,15 @@ namespace DepthChart.Infrastructure.Repositories
         {
             return Task.Run(async () =>
             {
-
-
                 var allCharts = await _db.Chart.ToListAsync();
                 var updatedData = allCharts;
                 _db.Chart.RemoveRange(allCharts);
                 await _db.SaveChangesAsync();
 
-                var individualDepthChart = updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault();
+                var teamDepthChart = updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault();
 
-                var playersInPosition = individualDepthChart.Chart[position].ToList();
+                var playersInPosition = teamDepthChart.Chart[position].ToList();
+
                 playersInPosition.RemoveAll(p => p.Name == name);
 
                 updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPosition;
