@@ -1,4 +1,6 @@
-﻿using Application.Queries;
+﻿using Application.Interfaces;
+using Application.Queries;
+using DepthChart.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,8 @@ namespace DepthChart.Application
             {
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
+
+            services.AddTransient<IChartService, ChartService>();
 
             return services;
         }

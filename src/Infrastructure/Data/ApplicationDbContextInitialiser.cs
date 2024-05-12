@@ -60,7 +60,16 @@ public class ApplicationDbContextInitialiser
                 Team = "ArizonaCardinals",
                 Chart  = new Dictionary<string, IEnumerable<Player>>
                 {
-                    { "QB", new List<Player> { new Player("Kyler", 21)}}
+                    { "QB", new List<Player> { new Player("BRADY TOM", 21), new Player("SMITH JOHN", 21)}},
+                    { "RB", new List<Player> { new Player("James Conner", 6)}},
+                    { "WR", new List<Player> { new Player("DeAndre Hopkins", 10)}},
+                    { "TE", new List<Player> { new Player("Maxx Williams", 87)}},
+                    { "OL", new List<Player> { new Player("Justin Pugh", 67)}},
+                    { "DL", new List<Player> { new Player("J.J. Watt", 99)}},
+                    { "LB", new List<Player> { new Player("Chandler Jones", 55)}},
+                    { "CB", new List<Player> { new Player("Byron Murphy Jr.", 33)}},
+                    { "S", new List<Player> { new Player("Budda Baker", 32)}}
+
                 }
             };
 

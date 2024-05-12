@@ -51,7 +51,7 @@ namespace DepthChart.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
-        Task<IQueryable<IEnumerable<Player>>> IChartRepository.GetBackups(string league, string team, string position, string name)
+        Task<IEnumerable<Player>> IChartRepository.GetBackups(string league, string team, string position, string name)
         {
             //return Task.FromResult(_db.Chart
             //    .Where(x => x.League == league && x.Team == team)
@@ -62,9 +62,9 @@ namespace DepthChart.Infrastructure.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<IQueryable<Domain.Common.DepthChart>> GetFullDepthChart(string league, string team)
+        public async Task<Domain.Common.DepthChart> GetFullDepthChart(string league, string team)
         {
-            return _db.Chart.Where(x => x.League == league && x.Team == team);
+            return await _db.Chart.Where(x => x.League == league && x.Team == team).FirstOrDefaultAsync();
         }
 
         public Task RemovePlayerFromDepthChart(string league, string team, string position, string name)

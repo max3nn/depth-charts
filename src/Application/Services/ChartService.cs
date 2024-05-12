@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Xml.Linq;
 
 namespace DepthChart.Application.Services
 {
@@ -30,9 +32,17 @@ namespace DepthChart.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<Domain.Common.DepthChart> GetFullDepthChart(string league, string team)
+        public async Task<Domain.Common.DepthChart> GetFullDepthChart(string league, string team)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _repository.GetFullDepthChart(league, team);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
 
         public Task RemovePlayerFromDepthChart(string league, string team, string position, string name)
