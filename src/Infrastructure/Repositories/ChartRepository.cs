@@ -13,25 +13,27 @@ namespace DepthChart.Infrastructure.Repositories
     {
         public Task AddPlayerToDepthChart(string league, string team, string position, string name, int number, int depth)
         {
+            // IMPORTANT NOTES: This is not following best practice and it done this way for simplicity.
+            // The InMemory DbContext doesn't quite work the same as an SQL database.
 
             return Task.Run(async () =>
             {
-                var allCharts = await _db.Chart.ToListAsync();
-                var updatedData = allCharts;
-                _db.Chart.RemoveRange(allCharts);
-                await _db.SaveChangesAsync();
+                var allDepthCharts = await _db.Chart.ToListAsync();
 
-                var teamDepthChart = updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault();
+                var teamDepthChart = allDepthCharts.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault();
 
-                var playersInPosition = teamDepthChart.Chart[position].ToList();
+                if (teamDepthChart is null) throw new Exception("Chart not found.");
+
+                var playersInPosition = teamDepthChart.Chart[position].ToList(); // ToList returns a new Reference, so we can modify it and then reassign it later.
 
                 playersInPosition.Insert(depth, new Player(name, number));
+                playersInPosition.Take(5); // TODO: This should be removed and controlled in the Domain/Application layer.
 
-                updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPosition;
+                allDepthCharts.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPosition;
 
-                await _db.Chart.AddRangeAsync(updatedData);
+                _db.Chart.UpdateRange(allDepthCharts);
+
                 await _db.SaveChangesAsync();
-
 
                 return Task.CompletedTask;
             });
@@ -39,9 +41,11 @@ namespace DepthChart.Infrastructure.Repositories
 
         async Task<IEnumerable<Player>> IChartRepository.GetBackups(string league, string team, string position, string name)
         {
-            var teamDepthChart = await _db.Chart.Where(dc => dc.League == league && dc.Team == team).FirstOrDefaultAsync();
+            var teamDepthChart = await _db.Chart.Where(dc => dc.League.ToUpper() == league.ToUpper() && dc.Team.ToUpper() == team.ToUpper()).FirstOrDefaultAsync();
 
-            var results = teamDepthChart.Chart[position].SkipWhile(x => x.Name == name);
+            if (teamDepthChart is null) throw new Exception("Chart not found.");
+
+            var results = teamDepthChart.Chart[position].SkipWhile(x => x.Name.ToUpper() == name.ToUpper());
 
             return results;
         }
@@ -55,22 +59,19 @@ namespace DepthChart.Infrastructure.Repositories
         {
             return Task.Run(async () =>
             {
-                var allCharts = await _db.Chart.ToListAsync();
-                var updatedData = allCharts;
-                _db.Chart.RemoveRange(allCharts);
+                // This will force enumeration upfront, so we can start modifying the resulting List.
+                var allDepthCharts = await _db.Chart.ToListAsync();
+
+                var teamDepthChart = allDepthCharts.Where(dc => dc.League.ToUpper() == league.ToUpper() && dc.Team.ToUpper() == team.ToUpper()).FirstOrDefault();
+
+                var playersInPosition = teamDepthChart.Chart[position].ToList(); // ToList returns a new Reference, so we can modify it and then reassign it later.
+                playersInPosition.RemoveAll(p => p.Name.ToUpper() == name.ToUpper());
+
+                allDepthCharts.Where(dc => dc.League.ToUpper() == league.ToUpper() && dc.Team.ToUpper() == team.ToUpper()).FirstOrDefault().Chart[position] = playersInPosition;
+
+                _db.Chart.UpdateRange(allDepthCharts);
+
                 await _db.SaveChangesAsync();
-
-                var teamDepthChart = updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault();
-
-                var playersInPosition = teamDepthChart.Chart[position].ToList();
-
-                playersInPosition.RemoveAll(p => p.Name == name);
-
-                updatedData.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPosition;
-
-                await _db.Chart.AddRangeAsync(updatedData);
-                await _db.SaveChangesAsync();
-
 
                 return Task.CompletedTask;
             });
