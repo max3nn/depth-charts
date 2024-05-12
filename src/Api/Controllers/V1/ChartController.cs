@@ -26,38 +26,38 @@ namespace Api.Controllers
         public async Task<IResult> GetFullDepthChart(string league, string team)
         {
 
-            return Results.Ok(
-                await _sender.Send(
+            var results = await _sender.Send(
                 new GetFullDepthChartQuery
                 {
                     League = league,
                     Team = team
-                })
-            );
+                });
+
+            return results is not null ? Results.Ok(results) : Results.NotFound();
         }
 
         [HttpPost("{league}/{team}/add")]
         [Produces("application/json")]
         public async Task<IResult> AddPlayerToDepthChart([FromBody] AddPlayerRequest request, string league, string team)
         {
-            await _sender.Send(new AddPlayerToDepthChartCommand
-            {
-                League = league,
-                Team = team,
-                Position = request.Position,
-                Name = request.Name,
-                Depth = request.Depth,
-                Number = request.Number
-            });
+           var results = await _sender.Send(new AddPlayerToDepthChartCommand
+                {
+                    League = league,
+                    Team = team,
+                    Position = request.Position,
+                    Name = request.Name,
+                    Depth = request.Depth,
+                    Number = request.Number
+                });
 
-            return Results.NoContent();
+            return results ? Results.NoContent() : Results.Problem();
         }
 
         [HttpDelete("{league}/{team}/remove")]
         [Produces("application/json")]
         public async Task<IResult> RemovePlayerFromDepthChart([FromBody] RemovePlayerRequest request, string league, string team)
         {
-            await _sender.Send(new RemovePlayerFromDepthChartCommand
+            var results = await _sender.Send(new RemovePlayerFromDepthChartCommand
             {
                 League = league,
                 Team = team,
@@ -65,7 +65,7 @@ namespace Api.Controllers
                 Name = request.Name
             });
 
-            return Results.NoContent();
+            return results ? Results.Ok(results) : Results.Problem();
         }
 
         [HttpPost("{league}/{team}/backups")]
@@ -73,15 +73,15 @@ namespace Api.Controllers
 
         public async Task<IResult> GetBackups(GetBackupsRequest request, string league, string team)
         {
-            return Results.Ok(
-                await _sender.Send(
-                    new GetBackupsQuery{
-                    Position = request.Position,
-                    Name = request.Name,
-                    League = league,
-                    Team = team
-                    })
-                );
+            var result = await _sender.Send(
+                    new GetBackupsQuery {
+                        Position = request.Position,
+                        Name = request.Name,
+                        League = league,
+                        Team = team
+                    });
+
+            return result is not null ? Results.Ok(result) : Results.Problem();
         }
     }
 }

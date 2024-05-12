@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Commands
 {
-    public class AddPlayerToDepthChartCommand : IRequest
+    public class AddPlayerToDepthChartCommand : IRequest<bool>
     {
         public required string League { get; set; }
         public required string Team { get; set; }
@@ -17,7 +17,7 @@ namespace Application.Commands
         public required int Number { get; set; }
     }
 
-    public class AddPlayerToDepthChartCommandHandler : IRequestHandler<AddPlayerToDepthChartCommand>
+    public class AddPlayerToDepthChartCommandHandler : IRequestHandler<AddPlayerToDepthChartCommand, bool>
     {
         protected IChartService _chartService;
         protected ILogger<AddPlayerToDepthChartCommandHandler> _logger;
@@ -28,11 +28,19 @@ namespace Application.Commands
             _logger = logger;
         }
 
-        public async Task Handle(AddPlayerToDepthChartCommand command, CancellationToken cancellationToken)
+        public async Task<bool> Handle(AddPlayerToDepthChartCommand command, CancellationToken cancellationToken)
         {
 
-            await _chartService.AddPlayerToDepthChart(command.League, command.Team, command.Position, command.Name, command.Number, command.Depth);
-            return;
+            try
+            {
+                await _chartService.AddPlayerToDepthChart(command.League, command.Team, command.Position, command.Name, command.Number, command.Depth);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error Adding {} to {} in position {} at depth ", command.Name, command.Team, command.Position, command.Depth);
+                return false;
+            }
 
         }
     }
