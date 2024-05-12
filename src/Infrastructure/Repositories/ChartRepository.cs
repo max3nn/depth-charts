@@ -23,7 +23,7 @@ namespace DepthChart.Infrastructure.Repositories
                 var playersInPosition = teamDepthChart.Chart[position].ToList(); // ToList returns a new Reference, so we can modify it and then reassign it later.
 
                 playersInPosition.Insert(depth, new Player(name, number));
-                playersInPosition.Take(5); // TODO: This should be removed and controlled in the Domain/Application layer.
+                playersInPosition.Take(5); // TODO: This should be removed and controlled in the Domain/Application layer since it could be considered a business rule.
 
                 allDepthCharts.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPosition;
 

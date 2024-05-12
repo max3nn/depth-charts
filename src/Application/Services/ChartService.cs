@@ -10,7 +10,7 @@ namespace DepthChart.Application.Services
 {
     public class ChartService(IChartRepository _repository, ILogger<ChartService> _logger) : IChartService
     {
-        public async ValueTask AddPlayerToDepthChart(string league, string team, string position, string name, int number, int depth)
+        public async Task AddPlayerToDepthChart(string league, string team, string position, string name, int number, int depth)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace DepthChart.Application.Services
             }
         }
 
-        public async ValueTask RemovePlayerFromDepthChart(string league, string team, string position, string name)
+        public async Task RemovePlayerFromDepthChart(string league, string team, string position, string name)
         {
             try
             {

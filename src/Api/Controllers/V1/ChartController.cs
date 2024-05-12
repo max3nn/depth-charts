@@ -27,35 +27,24 @@ namespace Api.Controllers
 
         [HttpGet("{league}/{team}")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetFullDepthChart(string league, string team)
+        public async Task<IResult> GetFullDepthChart(string league, string team)
         {
 
-            var result = await _sender.Send(
+            return Results.Ok(
+                await _sender.Send(
                 new GetFullDepthChartQuery
                 {
                     League = league,
                     Team = team
-                });
-
-            if (result != null)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return NotFound();
-            }
+                })
+            );
         }
 
         [HttpPost("{league}/{team}/add")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AddPlayerToDepthChart([FromBody] AddPlayerRequest request, string league, string team)
+        public async Task<IResult> AddPlayerToDepthChart([FromBody] AddPlayerRequest request, string league, string team)
         {
-            var result = await _sender.Send(new AddPlayerToDepthChartCommand
+            await _sender.Send(new AddPlayerToDepthChartCommand
             {
                 League = league,
                 Team = team,
@@ -65,16 +54,14 @@ namespace Api.Controllers
                 Number = request.Number
             });
 
-            return Ok(result);
+            return Results.NoContent();
         }
 
         [HttpDelete("{league}/{team}/remove")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> RemovePlayerFromDepthChart([FromBody] RemovePlayerRequest request, string league, string team)
+        public async Task<IResult> RemovePlayerFromDepthChart([FromBody] RemovePlayerRequest request, string league, string team)
         {
-            var result = await _sender.Send(new RemovePlayerFromDepthChartCommand
+            await _sender.Send(new RemovePlayerFromDepthChartCommand
             {
                 League = league,
                 Team = team,
@@ -82,23 +69,23 @@ namespace Api.Controllers
                 Name = request.Name
             });
 
-            return Ok(result);
+            return Results.NoContent();
         }
 
         [HttpPost("{league}/{team}/backups")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetBackups(GetBackupsRequest request, string league, string team)
+
+        public async Task<IResult> GetBackups(GetBackupsRequest request, string league, string team)
         {
-            var result = await _sender.Send(new GetBackupsQuery
-            {
-                Position = request.Position,
-                Name = request.Name,
-                League = league,
-                Team = team
-            });
-            return Ok(result);
+            return Results.Ok(
+                await _sender.Send(
+                    new GetBackupsQuery{
+                    Position = request.Position,
+                    Name = request.Name,
+                    League = league,
+                    Team = team
+                    })
+                );
         }
     }
 }

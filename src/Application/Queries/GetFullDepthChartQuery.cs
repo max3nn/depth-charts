@@ -22,9 +22,7 @@ namespace Application.Queries
 
         public async Task<DepthChart.Domain.Common.DepthChart> Handle(GetFullDepthChartQuery query, CancellationToken cancellationToken)
         {
-            var results = await _chartService.GetFullDepthChart(query.League, query.Team);
-
-            return results;
+            return await _chartService.GetFullDepthChart(query.League, query.Team);
         }
     }
 }

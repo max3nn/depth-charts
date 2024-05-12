@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Commands
 {
-    public class RemovePlayerFromDepthChartCommand : IRequest<bool>
+    public class RemovePlayerFromDepthChartCommand : IRequest
     {
         public required string League { get; set; }
         public required string Team { get; set; }
@@ -15,7 +15,7 @@ namespace Application.Commands
         public required string Name { get; set; }
     }
 
-    public class RemovePlayerFromDepthChartCommandHandler : IRequestHandler<RemovePlayerFromDepthChartCommand, bool>
+    public class RemovePlayerFromDepthChartCommandHandler : IRequestHandler<RemovePlayerFromDepthChartCommand>
     {
         protected IChartService _chartService;
         protected ILogger<RemovePlayerFromDepthChartCommandHandler> _logger;
@@ -26,19 +26,12 @@ namespace Application.Commands
             _logger = logger;
         }
 
-        public async Task<bool> Handle(RemovePlayerFromDepthChartCommand command, CancellationToken cancellationToken)
+        public async Task Handle(RemovePlayerFromDepthChartCommand command, CancellationToken cancellationToken)
         {
 
-            try
-            { 
-                await _chartService.RemovePlayerFromDepthChart(command.League, command.Team, command.Position, command.Name);    
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                throw new Exception(ex.Message);
-            }
+            await _chartService.RemovePlayerFromDepthChart(command.League, command.Team, command.Position, command.Name);
+            return;
+
         }
     }
 }

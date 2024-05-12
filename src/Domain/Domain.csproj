@@ -11,12 +11,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
-	
 	<ItemGroup>
-    <Folder Include="NBA\" />
-    <Folder Include="Entities\" />
-    <Folder Include="ValueObjects\" />
-  </ItemGroup>
+	  <Compile Remove="NBA\**" />
+	  <EmbeddedResource Remove="NBA\**" />
+	  <None Remove="NBA\**" />
+	</ItemGroup>
 
 	
 	<ItemGroup>
