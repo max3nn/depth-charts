@@ -40,15 +40,15 @@ namespace Api.Controllers
         [Produces("application/json")]
         public async Task<IResult> AddPlayerToDepthChart([FromBody] AddPlayerRequest request, string league, string team)
         {
-           var results = await _sender.Send(new AddPlayerToDepthChartCommand
-                {
-                    League = league,
-                    Team = team,
-                    Position = request.Position,
-                    Name = request.Name,
-                    Depth = request.Depth,
-                    Number = request.Number
-                });
+            var results = await _sender.Send(new AddPlayerToDepthChartCommand
+            {
+                League = league,
+                Team = team,
+                Position = request.Position,
+                Name = request.Name,
+                Depth = request.Depth,
+                Number = request.Number
+            });
 
             return results ? Results.NoContent() : Results.Problem();
         }
@@ -57,7 +57,7 @@ namespace Api.Controllers
         [Produces("application/json")]
         public async Task<IResult> RemovePlayerFromDepthChart([FromBody] RemovePlayerRequest request, string league, string team)
         {
-            var results = await _sender.Send(new RemovePlayerFromDepthChartCommand
+            var player = await _sender.Send(new RemovePlayerFromDepthChartCommand
             {
                 League = league,
                 Team = team,
@@ -65,7 +65,7 @@ namespace Api.Controllers
                 Name = request.Name
             });
 
-            return results ? Results.Ok(results) : Results.Problem();
+            return player is not null ? Results.Ok(player) : Results.Problem();
         }
 
         [HttpPost("{league}/{team}/backups")]
@@ -74,7 +74,8 @@ namespace Api.Controllers
         public async Task<IResult> GetBackups(GetBackupsRequest request, string league, string team)
         {
             var result = await _sender.Send(
-                    new GetBackupsQuery {
+                    new GetBackupsQuery
+                    {
                         Position = request.Position,
                         Name = request.Name,
                         League = league,

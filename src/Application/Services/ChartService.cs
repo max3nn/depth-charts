@@ -24,9 +24,9 @@ namespace DepthChart.Application.Services
             return await _repository.GetFullDepthChart(league, team);
         }
 
-        public async Task RemovePlayerFromDepthChart(string league, string team, string position, string name)
+        public async Task<Player> RemovePlayerFromDepthChart(string league, string team, string position, string name)
         {
-            await _repository.RemovePlayerFromDepthChart(league, team, position, name);
+            return await _repository.RemovePlayerFromDepthChart(league, team, position, name);
         }
     }
 }

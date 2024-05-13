@@ -2,12 +2,13 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using DepthChart.Domain;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Commands
 {
-    public class RemovePlayerFromDepthChartCommand : IRequest<bool>
+    public class RemovePlayerFromDepthChartCommand : IRequest<Player?>
     {
         public required string League { get; set; }
         public required string Team { get; set; }
@@ -15,7 +16,7 @@ namespace Application.Commands
         public required string Name { get; set; }
     }
 
-    public class RemovePlayerFromDepthChartCommandHandler : IRequestHandler<RemovePlayerFromDepthChartCommand, bool>
+    public class RemovePlayerFromDepthChartCommandHandler : IRequestHandler<RemovePlayerFromDepthChartCommand, Player?>
     {
         protected IChartService _chartService;
         protected ILogger<RemovePlayerFromDepthChartCommandHandler> _logger;
@@ -26,17 +27,16 @@ namespace Application.Commands
             _logger = logger;
         }
 
-        public async Task<bool> Handle(RemovePlayerFromDepthChartCommand command, CancellationToken cancellationToken)
+        public async Task<Player?> Handle(RemovePlayerFromDepthChartCommand command, CancellationToken cancellationToken)
         {
             try
             {
-                await _chartService.RemovePlayerFromDepthChart(command.League, command.Team, command.Position, command.Name);
-                return true;
+                return await _chartService.RemovePlayerFromDepthChart(command.League, command.Team, command.Position, command.Name);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "Error removing {} from {} in position {}", command.Name, command.Team, command.Position);
-                return false;
+                _logger.LogError(ex, "Error removing {Name} from {Team} in position {Qb}", command.Name, command.Team, command.Position);
+                return null;
             }
         }
     }
