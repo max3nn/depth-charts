@@ -5,7 +5,7 @@
 3. Then, run the project using ```dotnet run --verbosity minimal --project src/Api/Api.csproj``` or alternatively ```dotnet watch run --verbosity minimal --project src/Api/Api.csproj```. The later should open a browser window at the swagger interface.
 
 # How to Run Tests
-1. Inside the root directory execute the command ```dotnet test --verbosity normal```
+1. Inside the root directory execute the command ```dotnet test --v q```
 
 # Important Notes
 1. The project is built using .NET 8.
