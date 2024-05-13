@@ -13,8 +13,6 @@ namespace Application.UnitTests.Services
 {
     public class ChartServiceTest
     {
-        // TODO: Add private services
-
         private static DbContextOptions<ApplicationDbContext> _dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "DepthChartTest").Options;
 
         readonly ApplicationDbContext _db;

@@ -1,3 +1,4 @@
+using DepthChart.Api.Infrastructure;
 using DepthChart.Application;
 using DepthChart.Infrastructure.Data;
 using WebApplicationBuilder = Microsoft.AspNetCore.Builder;
@@ -13,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHealthChecks();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
 
@@ -24,13 +26,9 @@ if (app.Environment.IsDevelopment())
     await app.InitialiseDatabaseAsync();
 }
 
-// TODO: 
-// Implement global error handling
-
-
-
 app.MapControllers();
 app.MapHealthChecks("/health");
 
+app.UseExceptionHandler();
 
 app.Run();
