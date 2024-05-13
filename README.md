@@ -1,7 +1,7 @@
 # How to Restore and Run the Swagger Interface
 
 1. Clone the repository.
-2. Inside the root folder, execute the command 'dotnet restore'.
+2. Inside the root folder, execute the command ```dotnet restore```.
 3. Then, run the project using ```dotnet run --verbosity minimal --project src/Api/Api.csproj``` or alternatively ```dotnet watch run --verbosity minimal --project src/Api/Api.csproj```. The later should open a browser window at the swagger interface.
 
 # How to Run Tests
