@@ -1,0 +1,49 @@
+[
+    {
+        "League": "NFL",
+        "Team": "ArizonaCardinals",
+        "Chart": {
+            "QB": [ { "Name": "BRADY TOM", "Number": 1 }, { "Name": "SMITH JOHN", "Number": 2 } ],
+            "RB": [ { "Name": "James Conner", "Number": 3 } ],
+            "WR": [ { "Name": "DeAndre Hopkins", "Number": 4 } ],
+            "TE": [ { "Name": "Maxx Williams", "Number": 5 } ],
+            "OL": [ { "Name": "Justin Pugh", "Number": 6 } ],
+            "DL": [ { "Name": "J.J. Watt", "Number": 7 } ],
+            "LB": [ { "Name": "Chandler Jones", "Number": 8 } ],
+            "CB": [ { "Name": "Byron Murphy Jr.", "Number": 9 } ],
+            "S": [ { "Name": "Budda Baker", "Number": 10 } ]
+        }
+    },
+    {
+        "League": "NFL",
+        "Team": "AtlantaFalcons",
+        "Chart": {
+            "QB": [{ "Name": "Matt Ryan", "Number": 11 },{ "Name": "Josh Rosen", "Number": 12 },{ "Name": "Feleipe Franks", "Number": 13 },{ "Name": "A.J. McCarron", "Number": 14 },{ "Name": "Kurt Benkert", "Number": 15 }],
+            "RB": [{ "Name": "Mike Davis", "Number": 16 },{ "Name": "Cordarrelle Patterson", "Number": 17 },{ "Name": "Qadree Ollison", "Number": 18 },{ "Name": "Tony Brooks-James", "Number": 19 },{ "Name": "D'Onta Foreman", "Number": 20 }],
+            "WR": [{ "Name": "Calvin Ridley", "Number": 21 },{ "Name": "Russell Gage", "Number": 22 },{ "Name": "Olamide Zaccheaus", "Number": 23 },{ "Name": "Frank Darby", "Number": 24 },{ "Name": "Christian Blake", "Number": 25 }],
+            "TE": [{ "Name": "Kyle Pitts", "Number": 26 },{ "Name": "Hayden Hurst", "Number": 27 },{ "Name": "Lee Smith", "Number": 28 },{ "Name": "Jaeden Graham", "Number": 29 },{ "Name": "John Raine", "Number": 30 }],
+            "OL": [{ "Name": "Jake Matthews", "Number": 31 },{ "Name": "Chris Lindstrom", "Number": 32 },{ "Name": "Kaleb McGary", "Number": 33 },{ "Name": "Matt Hennessy", "Number": 34 },{ "Name": "Jalen Mayfield", "Number": 35 }],
+            "DL": [{ "Name": "Grady Jarrett", "Number": 36 },{ "Name": "Dante Fowler Jr.", "Number": 37 },{ "Name": "Marlon Davidson", "Number": 38 },{ "Name": "John Cominsky", "Number": 39 },{ "Name": "Ta'Quon Graham", "Number": 40 }],
+            "LB": [{ "Name": "Deion Jones", "Number": 41 },{ "Name": "Foyesade Oluokun", "Number": 42 },{ "Name": "Mykal Walker", "Number": 43 },{ "Name": "Brandon Copeland", "Number": 44 },{ "Name": "Errol Thompson", "Number": 45 }],
+            "CB": [{ "Name": "A.J. Terrell", "Number": 46 },{ "Name": "Isaiah Oliver", "Number": 47 },{ "Name": "Fabian Moreau", "Number": 48 },{ "Name": "Darren Hall", "Number": 49 },{ "Name": "Chris Williamson", "Number": 50 }]
+        }
+    },
+    {
+        "League": "NFL",
+        "Team": "BaltimoreRavens",
+        "Chart": {
+            "QB": [ { "Name": "Lamar Jackson", "Number": 51 } ],
+            "RB": [ { "Name": "Ty'Son Williams", "Number": 52 } ],
+            "WR": [ { "Name": "Marquise Brown", "Number": 53 } ],
+            "TE": [ { "Name": "Mark Andrews", "Number": 54 } ]
+        }
+    },
+    {
+        "League": "NFL",
+        "Team": "BuffaloBills",
+        "Chart": {
+            "QB": [ { "Name": "Josh Allen", "Number": 55 } ],
+            "RB": [ { "Name": "Zack Moss", "Number": 56 } ]
+        }
+    }
+]

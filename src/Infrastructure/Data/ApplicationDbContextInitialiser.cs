@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Builder;
 using DepthChart.Domain;
+using System.Text.Json;
 
 namespace DepthChart.Infrastructure.Data;
 public static class InitialiserExtensions
@@ -12,7 +13,7 @@ public static class InitialiserExtensions
 
         var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
 
-        await initialiser.SeedAsync();
+        await initialiser.TrySeedAsync();
     }
 }
 
@@ -27,45 +28,15 @@ public class ApplicationDbContextInitialiser
         _dbContext = dbContext;
     }
 
-
-    public async Task SeedAsync()
+    public async Task TrySeedAsync(string file = "../../SeedData.json")
     {
         try
         {
-            await TrySeedAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while seeding the database.");
-            throw;
-        }
-    }
+            var json = await File.ReadAllTextAsync(file);
+            IEnumerable<Domain.Common.DepthChart> seedDepthCharts = JsonSerializer.Deserialize<IEnumerable<Domain.Common.DepthChart>>(json);
 
-    public async Task TrySeedAsync()
-    {
-        try
-        {
-            var chart = _dbContext.Chart;
-            var ACDepthChart = new Domain.Common.DepthChart
-            {
-                League = "NFL",
-                Team = "ArizonaCardinals",
-                Chart  = new Dictionary<string, IEnumerable<Player>>
-                {
-                    { "QB", new List<Player> { new("BRADY TOM", 21), new Player("SMITH JOHN", 21)}},
-                    { "RB", new List<Player> { new("James Conner", 6)}},
-                    { "WR", new List<Player> { new("DeAndre Hopkins", 10)}},
-                    { "TE", new List<Player> { new("Maxx Williams", 87)}},
-                    { "OL", new List<Player> { new("Justin Pugh", 67)}},
-                    { "DL", new List<Player> { new("J.J. Watt", 99)}},
-                    { "LB", new List<Player> { new("Chandler Jones", 55)}},
-                    { "CB", new List<Player> { new("Byron Murphy Jr.", 33)}},
-                    { "S", new List<Player> { new("Budda Baker", 32)}}
-                }
-            };
-
-                _dbContext.Chart.Add(ACDepthChart);
-                await _dbContext.SaveChangesAsync();
+            _dbContext.Chart.AddRange(seedDepthCharts);
+            await _dbContext.SaveChangesAsync();
         }
         catch (Exception ex)
         {

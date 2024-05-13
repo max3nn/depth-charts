@@ -1,13 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using DepthChart.Application.Services;
 using DepthChart.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using Xunit;
-using DepthChart.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using DepthChart.Domain.Contracts;
 using DepthChart.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
+using Xunit;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Application.UnitTests.Services
 {
@@ -17,82 +17,92 @@ namespace Application.UnitTests.Services
 
         private static DbContextOptions<ApplicationDbContext> _dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "DepthChartTest").Options;
 
-        ApplicationDbContext _db;
+        readonly ApplicationDbContext _db;
+
+        private readonly ChartRepository _chartRepository;
+        private readonly ChartService _chartService;
+        private readonly ILogger<ChartService> _logger = Substitute.For<ILogger<ChartService>>();
+        private readonly ILogger<ApplicationDbContextInitialiser> _loggerDbContext = Substitute.For<ILogger<ApplicationDbContextInitialiser>>();
 
         public ChartServiceTest()
         {
             _db = new ApplicationDbContext(_dbContextOptions);
             _db.Database.EnsureDeleted();
             SeedDatabase();
+
+            _chartRepository = new ChartRepository(_db);
+            _chartService = new ChartService(_chartRepository, _logger);
         }
 
         [Fact]
         async public Task Test_SeedDatabase_Successful()
         {
+            // Act
             var results = await _db.Chart.ToListAsync();
 
+            // Assert
             Assert.NotEmpty(results);
         }
 
-        [Fact]
-        async public Task AddPlayerToDepthChart_Should_AddPlayerToDepthChart()
+        [Theory]
+        [InlineData("NFL", "ArizonaCardinals", 9)]
+        [InlineData("NFL", "AtlantaFalcons", 8)]
+        [InlineData("NFL", "BaltimoreRavens", 4)]
+        [InlineData("NFL", "BuffaloBills", 2)]
+        async public Task GetFullDepthChart_Returns_DepthChart_WithAll_SeededPositions(string league, string team, int seededPositions)
         {
-            // Arrange
-            // TODO: Create an instance of ChartService and mock the dependencies
-
             // Act
-            // TODO: Call the AddPlayerToDepthChart method with test data
+            var chart = await _chartService.GetFullDepthChart(league, team);
 
             // Assert
-            // TODO: Assert that the player is added to the depth chart correctly
+            Assert.NotNull(chart);
+            Assert.Equal(league, chart.League);
+            Assert.Equal(team, chart.Team);
+            Assert.Equal(seededPositions, chart.Chart.Count);
+        }
+
+        [Theory]
+        [InlineData("AtlantaFalcons", "QB", "LAST FIRST", 10, 0)]
+        [InlineData("AtlantaFalcons", "QB", "ABC CBA", 21, 4)]
+        [InlineData("AtlantaFalcons", "QB", "AAA BBB", 21, 3)]
+        async public Task Test_AddPlayerToDepthChart_At_Various_Depths_Successful(string team, string position, string name, int number, int positionDepth)
+        {
+            // Act
+            await _chartService.AddPlayerToDepthChart("NFL", team, position, name, number, positionDepth);
+            var chart = await _chartService.GetFullDepthChart("NFL", team);
+            var playerInPosition = chart.Chart[position].ToList();
+            var playerAtDepth = playerInPosition[positionDepth];
+
+            // Assert
+            Assert.Equal(name, playerAtDepth.Name);
+            Assert.Equal(number, playerAtDepth.Number);
         }
 
         [Fact]
-        async public Task GetBackups_Should_ReturnBackupsForPlayer()
+        async public Task Test_AddPlayerToDepthChart_Has_MaxDepth_Of_5_Player()
         {
-            // Arrange
-            // TODO: Create an instance of ChartService and mock the dependencies
-
             // Act
-            // TODO: Call the GetBackups method with test data
+            await _chartService.AddPlayerToDepthChart("NFL", "AtlantaFalcons", "WR", "PERSON NAME", 51, 0);
+            var chart = await _chartService.GetFullDepthChart("NFL", "AtlantaFalcons");
 
             // Assert
-            // TODO: Assert that the correct backups are returned
+            Assert.Equal(5, chart.Chart["WR"].Count());
         }
 
         [Fact]
-        async public Task GetFullDepthChart_Should_ReturnFullDepthChart()
+        async public Task Test_Can_AddPlayerToDepthChart_To_Empty_Position()
         {
-            // Arrange
-            // TODO: Create an instance of ChartService and mock the dependencies
-
             // Act
-            // TODO: Call the GetFullDepthChart method with test data
+            await _chartService.AddPlayerToDepthChart("NFL", "AtlantaFalcons", "S", "PERSON NAME", 51, 0);
+            var chart = await _chartService.GetFullDepthChart("NFL", "AtlantaFalcons");
 
             // Assert
-            // TODO: Assert that the complete depth chart is returned
+            Assert.Equal(1, chart.Chart["S"].Count());
         }
-
-        [Fact]
-        async public Task RemovePlayerFromDepthChart_Should_RemovePlayerFromDepthChart()
-        {
-            // Arrange
-            // TODO: Create an instance of ChartService and mock the dependencies
-
-            // Act
-            // TODO: Call the RemovePlayerFromDepthChart method with test data
-
-            // Assert
-            // TODO: Assert that the player is removed from the depth chart correctly
-        }
-
-        // Edge cases
-
-        // Player Name casing doesn't affected the retrieval of backups, or removal players
 
         private void SeedDatabase()
         {
-            new ApplicationDbContextInitialiser(null, _db).SeedAsync().Wait();
+            new ApplicationDbContextInitialiser(_loggerDbContext, _db).TrySeedAsync("../../../../../SeedData.json").Wait();
         }
     }
 }

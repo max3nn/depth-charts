@@ -20,18 +20,26 @@ namespace DepthChart.Infrastructure.Repositories
 
                 if (teamDepthChart is null) throw new Exception("Chart not found.");
 
-                var playersInPosition = teamDepthChart.Chart[position].ToList(); // ToList returns a new Reference, so we can modify it and then reassign it later.
+                IEnumerable<Player> playersInPosition;
 
-                playersInPosition.Insert(depth, new(name, number));
-                playersInPosition.Take(5); // Note, this would be a likely candidate to be controlled in the Application/Domain layer.
+                teamDepthChart.Chart.TryGetValue(position, out playersInPosition);
 
-                allDepthCharts.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPosition;
+                if (playersInPosition is not null)
+                {
+                    List<Player> playersInPositionList = playersInPosition.ToList();
+                    playersInPositionList.Insert(depth, new(name, number));
 
-                _db.Chart.UpdateRange(allDepthCharts);
-
-                await _db.SaveChangesAsync();
-
-                return Task.CompletedTask;
+                    allDepthCharts.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPositionList.Take(5);
+                }
+                else
+                {
+                    playersInPosition = new List<Player> { new(name, number) };
+                    allDepthCharts.Where(dc => dc.League == league && dc.Team == team).FirstOrDefault().Chart[position] = playersInPosition;
+                }
+                
+                    _db.Chart.UpdateRange(allDepthCharts);
+                    await _db.SaveChangesAsync();
+                    return Task.CompletedTask;
             });
         }
 
